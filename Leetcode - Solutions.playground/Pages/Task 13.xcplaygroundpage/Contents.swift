@@ -1,6 +1,6 @@
 import Foundation
 
-let testData: String = "MDCXCV"
+let testData: String = "CMXCVI"
 
 class Solution {
     func romanToInt(_ s: String) -> Int {
@@ -14,37 +14,16 @@ class Solution {
             "D": 500,
             "M": 1000
         ] as [Character: Int]
-        var iter: Int = 0
         if s.count == 1 { return symbols[s[0]] ?? 0 }
-        repeat {
-            if iter >= s.count-1 { break }
-            let current: Character = s[iter]
-            let next: Character    = s[iter + 1]
-            var twoCharFlag: Bool = false
-            guard
-                let currentValue = symbols[current],
-                let nextValue = symbols[next]
-            else {
-                continue
-            }
-            if currentValue < nextValue {
-                sum += nextValue - currentValue
-                twoCharFlag = true
+        for iter in 0..<s.count {
+            let currentValue: Int = symbols[s[iter]] ?? 0
+            if iter < s.count-1 && currentValue < symbols[s[iter + 1]] ?? 0 {
+                sum -= currentValue
             }
             else {
-                sum += symbols[current] ?? -1
+                sum += currentValue
             }
-            iter += 1
-            if twoCharFlag { iter += 1 }
-        } while true
-        
-        guard
-            let lastValue  = symbols[s[s.count - 1]],
-            let beforeLast = symbols[s[s.count - 2]]
-        else {
-            return sum
         }
-        sum += lastValue <= beforeLast ? lastValue : 0
         return sum
     }
 }
